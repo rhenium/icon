@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>icon</title>
+    <style>
+      img {
+        width: 128px;
+        height: 128px;
+      }
+
+      .container {
+        margin: 10px;
+        padding: 15px;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+      }
+
+      .container.flex {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .item.flex {
+        margin: 5px;
+      }
+
+      .item img {
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <% if flash[:notice] %><div class="container"><%= flash[:notice] %></div><% end %>
+    <div class="container flex">
+      <% ids.each do |id| %>
+        <div class="item flex"><a href="/update" data-id="<%= id %>"><img alt="<%= id %>" src="<%= user_id %>/<%= id %>"></a></div>
+      <% end %>
+    </div>
+
+    <div class="container">
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+
+    <form action="/update" method="post">
+      <input type="hidden" name="id">
+    </form>
+
+    <script>
+      var form = document.querySelector("form[action=\"/update\"]");
+      var hidden = form.querySelector("input[type=\"hidden\"]");
+      Array.prototype.forEach.call(document.querySelectorAll("a[href=\"/update\"]"), function(item) {
+        item.addEventListener("click", function(e) {
+          e.preventDefault();
+          hidden.value = e.currentTarget.dataset.id;
+          form.submit();
+        }, false);
+      });
+    </script>
+  </body>
+</html>
+
